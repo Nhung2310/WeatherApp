@@ -4,6 +4,7 @@ import 'package:test_flutter/app_assets.dart';
 import 'package:test_flutter/ui/weather_app2.dart';
 
 class WeatherApp1 extends StatelessWidget {
+  //List<dynamic> users=[];
   const WeatherApp1({super.key});
 
   @override

@@ -3,6 +3,11 @@ import 'package:test_flutter/app_assets.dart';
 import 'package:test_flutter/app_color.dart';
 import 'package:test_flutter/ui/weather_app3.dart';
 import 'package:test_flutter/ui/weather_card.dart';
+//import 'package:geolocator/geolocator.dart';
+import 'package:test_flutter/location_service.dart';
+
+import 'package:dio/dio.dart';
+import 'package:test_flutter/model/weather_model.dart';
 
 class WeatherApp2 extends StatefulWidget {
   const WeatherApp2({super.key});
@@ -12,6 +17,8 @@ class WeatherApp2 extends StatefulWidget {
 }
 
 class _WeatherApp2State extends State<WeatherApp2> {
+  WeatherModel? weatherData;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,23 +52,30 @@ class _WeatherApp2State extends State<WeatherApp2> {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           style: const TextStyle(color: AppColor.white),
-                          children: const [
-                            TextSpan(
-                              text: '19\n',
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'VietNam\n',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            TextSpan(
-                              text: 'Max: 24  Min:18',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ],
+                          children:
+                              weatherData == null
+                                  ? [TextSpan(text: 'Loading ...')]
+                                  : [
+                                    TextSpan(
+                                      text:
+                                          '${weatherData!.current.tempC.round()}\n',
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '${weatherData!.current.condition.text}\n',
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          'Max: ${weatherData!.forecast.forecastDay[0].day.maxTempC.round()} '
+                                          'Min: ${weatherData!.forecast.forecastDay[0].day.minTempC.round()}',
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ],
                         ),
                       ),
                     ),
@@ -109,15 +123,6 @@ class _WeatherApp2State extends State<WeatherApp2> {
                           ),
                         ],
                       ),
-                      // children: const [
-                      //   Icon(
-                      //     Icons.location_on,
-                      //     color: AppColor.white,
-                      //     size: 28,
-                      //   ),
-                      //   Icon(Icons.add_circle, color: AppColor.white, size: 34),
-                      //   Icon(Icons.menu, color: AppColor.white, size: 28),
-                      // ],
                     ),
                   ),
                 ],
@@ -126,12 +131,56 @@ class _WeatherApp2State extends State<WeatherApp2> {
                 bottom: 45,
                 left: 0,
                 right: 0,
-                child: const WeatherCard(),
+                child: WeatherCard(weatherData: weatherData),
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getLocation();
+    });
+  }
+
+  void getLocation() async {
+    try {
+      final position = await LocationService.getCurrentLocation();
+      final address = await LocationService.getAddressFromPosition(position);
+
+      print(
+        'ChangNhung nè hihi Lat: ${position.latitude}, Lng: ${position.longitude}',
+      );
+      print(' Địa chỉ: $address');
+
+      fetchWeather(position.latitude, position.longitude);
+    } catch (e) {
+      print('❌ Lỗi lấy vị trí hoặc địa chỉ: $e');
+    }
+  }
+
+  void fetchWeather(double lat, double lon) async {
+    try {
+      final dio = Dio();
+      const apiKey = '14f15a5d38894172b0f73339251404';
+
+      final respone = await dio.get(
+        'https://api.weatherapi.com/v1/forecast.json',
+        queryParameters: {'key': apiKey, 'q': '$lat,$lon', 'days': 1},
+      );
+
+      setState(() {
+        weatherData = WeatherModel.fromJson(respone.data);
+      });
+
+      print("Liu liu:${weatherData!.current.tempC}");
+    } catch (e) {
+      print("Lỗi kìa liu liu: $e");
+    }
   }
 }

@@ -59,7 +59,7 @@ class _WeatherHourState extends State<WeatherHour> {
                   child: WeatherHourCard(
                     temperature: data['temp']!,
                     hour: data['hour']!,
-                    iconAsset: AppAssets.icCloudRain,
+                    icon: Icon(Icons.cloud, color: Colors.white),
                   ),
                 );
               },
@@ -74,53 +74,3 @@ class _WeatherHourState extends State<WeatherHour> {
     );
   }
 }
-
-// class WeatherHour extends StatelessWidget {
-//   const WeatherHour({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-    
-//     return Column(
-//       mainAxisSize: MainAxisSize.min,
-//       children: [
-        
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceAround,
-//           children: const [
-//             WeatherHourCard(
-//               temperature: '19°C',
-//               hour: '15.00',
-//               iconAsset: AppAssets.icCloudRain,
-//             ),
-//             WeatherHourCard(
-//               temperature: '18°C',
-//               hour: '16.00',
-//               iconAsset: AppAssets.icCloudRain,
-//             ),
-//             WeatherHourCard(
-//               temperature: '18°C',
-//               hour: '17.00',
-//               iconAsset: AppAssets.icCloudRain,
-//             ),
-//             WeatherHourCard(
-//               temperature: '18°C',
-//               hour: '18.00',
-//               iconAsset: AppAssets.icCloudRain,
-//             ),
-//              WeatherHourCard(
-//               temperature: '18°C',
-//               hour: '17.00',
-//               iconAsset: AppAssets.icCloudRain,
-//             ),
-//             WeatherHourCard(
-//               temperature: '18°C',
-//               hour: '18.00',
-//               iconAsset: AppAssets.icCloudRain,
-//             ),
-//           ],
-//         ),
-//       ],
-//     );
-//   }
-// }

@@ -39,13 +39,6 @@ class _WeatherApp3State extends State<WeatherApp3> {
                           text: 'North America\n Max: 24°   Min:18°\n',
                           style: TextStyle(fontSize: 20),
                         ),
-                        // TextSpan(
-                        //   text: '7-Days Forecasts\n',
-                        //   style: TextStyle(
-                        //     fontSize: 21,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ),

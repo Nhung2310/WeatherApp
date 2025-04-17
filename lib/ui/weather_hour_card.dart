@@ -4,13 +4,13 @@ import 'package:test_flutter/app_color.dart';
 class WeatherHourCard extends StatelessWidget {
   final String temperature;
   final String hour;
-  final String iconAsset;
+  final Widget icon;
 
   const WeatherHourCard({
     super.key,
     required this.temperature,
     required this.hour,
-    required this.iconAsset,
+    required this.icon,
   });
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class WeatherHourCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Image.asset(iconAsset, width: 30, height: 30),
+          icon,
           const SizedBox(height: 8),
           Text(hour, style: const TextStyle(color: AppColor.white)),
         ],

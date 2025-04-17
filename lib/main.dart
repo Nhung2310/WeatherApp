@@ -5,16 +5,15 @@ void main() {
   runApp(const WeatherApp());
 }
 
-class WeatherApp extends StatelessWidget{
+class WeatherApp extends StatelessWidget {
   const WeatherApp({super.key});
 
-@override
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return MaterialApp(
-      home: const WeatherApp1(),// gọi màn hình chính
+      home: const WeatherApp1(), // gọi màn hình chính
       debugShowCheckedModeBanner: false,
     );
   }
-
 }
